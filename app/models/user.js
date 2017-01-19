@@ -87,17 +87,21 @@ var UserSchema = new mongoose.Schema({
         trim: true
     },
     rooms: [{
-		type: ObjectId,
-		ref: 'Room' 
+      type: ObjectId,
+      ref: 'Room'
     }],
     openRooms: [{
-      		type: String,
-                trim: true
+      type: String,
+      trim: true
     }],
-	messages: [{
-		type: ObjectId,
-		ref: 'Message'
-	}]
+    messages: [{
+      type: ObjectId,
+      ref: 'Message'
+    }],
+    openPrivateMessages: [{
+      type: String,
+      trim: true
+    }]
 }, {
     toObject: {
         virtuals: true
@@ -280,6 +284,7 @@ UserSchema.method('toJSON', function() {
         displayName: this.displayName,
         avatar: this.avatar,
         openRooms: this.openRooms,
+        openPrivateMessages: this.openPrivateMessages,
     };
 });
 
