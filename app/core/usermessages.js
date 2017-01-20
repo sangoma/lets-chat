@@ -26,13 +26,31 @@ UserMessageManager.prototype.onMessageCreated = function(message, user, options,
     }.bind(this));
 };
 
+UserMessageManager.prototype.close = function(options, cb) {
+    var User = mongoose.model('User');
+    User.findById(options.owner, function(err, user) {
+        var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
+
+        if (messageInArray) {
+          user.openPrivateMessages = user.openPrivateMessages.splice(user.openPrivateMessages.indexOf(options.user.toString()), 1);
+          user.save(function(err) {
+              if (err) {
+                  console.error(err);
+                  return cb(err);
+              }
+          });
+        }
+
+    }.bind(this));
+};
+
 UserMessageManager.prototype.create = function(options, cb) {
     var UserMessage = mongoose.model('UserMessage'),
         User = mongoose.model('User');
 
     User.findById(options.owner, function(err, user) {
         var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
-        
+
         if (!messageInArray) {
           user.openPrivateMessages.push(options.user.toString());
           user.save(function(err) {
@@ -63,7 +81,7 @@ UserMessageManager.prototype.create = function(options, cb) {
 
         var message = new UserMessage(data);
         var messageInArray = _.includes(user.openPrivateMessages, options.owner.toString());
-        
+
         if (!messageInArray) {
           user.openPrivateMessages.push(options.owner.toString());
           user.save(function(err) {
