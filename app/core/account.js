@@ -43,6 +43,10 @@ AccountManager.prototype.update = function(id, options, cb) {
         if (options.openRooms) {
           user.openRooms = options.openRooms;
         }
+
+        if (options.openPrivateMessages) {
+          user.openPrivateMessages = options.openPrivateMessages;
+        }
         
         if (options.username && options.username !== user.username) {
             var xmppConns = this.core.presence.system.connections.query({

@@ -41,6 +41,9 @@ module.exports = function() {
         })
         .post(function(req) {
             req.io.route('user-messages:create');
+        })
+        .delete(function(req) {
+            req.io.route('user-messages:close');
         });
 
     //
@@ -75,6 +78,18 @@ module.exports = function() {
                 };
 
             core.usermessages.list(options, function(err, messages) {
+                if (err) {
+                    return res.sendStatus(400);
+                }
+                res.json(messages);
+            });
+        },
+        close: function(req, res) {
+            var options = {
+                owner: req.user_id,
+                user: req.param('user')
+            }
+            core.usermessages.close(options, function(err, messages) {
                 if (err) {
                     return res.sendStatus(400);
                 }

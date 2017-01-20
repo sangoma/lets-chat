@@ -4,6 +4,7 @@ var Connection = require('./presence/connection'),
     Room = require('./presence/room'),
     ConnectionCollection = require('./presence/connection-collection'),
     RoomCollection = require('./presence/room-collection'),
+    UserMessageCollection = require('./presence/usermessages-collection'),
     UserCollection = require('./presence/user-collection');
 
 function PresenceManager(options) {
@@ -12,8 +13,13 @@ function PresenceManager(options) {
     this.connections = new ConnectionCollection();
     this.rooms = new RoomCollection();
     this.users = new UserCollection({ core: this.core });
+    this.usermessages = new UserMessageCollection();
+
     this.rooms.on('user_join', this.onJoin.bind(this));
     this.rooms.on('user_leave', this.onLeave.bind(this));
+
+    this.usermessages.on('usermessages_join', this.onMessage.bind(this));
+    this.usermessages.on('usermessages_leave', this.onClose.bind(this));
 
     this.connect = this.connect.bind(this);
     this.getUserCountForRoom = this.getUserCountForRoom.bind(this);
@@ -65,6 +71,14 @@ PresenceManager.prototype.onJoin = function(data) {
 
 PresenceManager.prototype.onLeave = function(data) {
     this.core.emit('presence:user_leave', data);
+};
+
+PresenceManager.prototype.onMessage = function(data) {
+    this.core.emit('user-messages:new', data);
+}
+
+PresenceManager.prototype.onClose = function(data) {
+    this.core.emit('user-messages:close', data);
 };
 
 PresenceManager.Connection = Connection;

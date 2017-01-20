@@ -92,6 +92,7 @@ module.exports = function() {
                     firstName: form.firstName || form['first-name'],
                     lastName: form.lastName || form['last-name'],
                     openRooms: form.openRooms,
+                    openPrivateMessages: form.openPrivateMessages,
                 };
 
             core.account.update(req.user._id, data, function (err, user) {

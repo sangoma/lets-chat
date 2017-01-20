@@ -46,6 +46,17 @@ UserMessageManager.prototype.create = function(options, cb) {
         };
 
         var message = new UserMessage(data);
+        var messageInArray = user.openPrivateMessages.includes(options.user.toString());
+        
+        if (!messageInArray) {
+          user.openPrivateMessages.push(options.user.toString());
+          user.save(function(err) {
+              if (err) {
+                console.error(err);
+                return cb(err);
+              }
+          });
+        }
 
         // Test if this message is OTR
         if (data.text.match(/^\?OTR/)) {
