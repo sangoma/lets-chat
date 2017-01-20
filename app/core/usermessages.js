@@ -46,7 +46,7 @@ UserMessageManager.prototype.create = function(options, cb) {
         };
 
         var message = new UserMessage(data);
-        var messageInArray = user.openPrivateMessages.includes(options.user.toString());
+        var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
         
         if (!messageInArray) {
           user.openPrivateMessages.push(options.user.toString());
