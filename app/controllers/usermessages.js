@@ -86,7 +86,7 @@ module.exports = function() {
         },
         close: function(req, res) {
             var options = {
-                owner: req.user_id,
+                owner: req.user._id,
                 user: req.param('user')
             }
             core.usermessages.close(options, function(err, messages) {
