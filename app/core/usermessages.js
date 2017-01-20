@@ -30,6 +30,22 @@ UserMessageManager.prototype.create = function(options, cb) {
     var UserMessage = mongoose.model('UserMessage'),
         User = mongoose.model('User');
 
+    User.findById(options.owner, function(err, user) {
+        var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
+        
+        if (!messageInArray) {
+          user.openPrivateMessages.push(options.user.toString());
+          user.save(function(err) {
+              if (err) {
+                console.error(err);
+                return cb(err);
+              }
+          });
+        }
+
+    }.bind(this));
+
+
     User.findById(options.user, function(err, user) {
         if (err) {
             console.error(err);
@@ -46,10 +62,10 @@ UserMessageManager.prototype.create = function(options, cb) {
         };
 
         var message = new UserMessage(data);
-        var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
+        var messageInArray = _.includes(user.openPrivateMessages, options.owner.toString());
         
         if (!messageInArray) {
-          user.openPrivateMessages.push(options.user.toString());
+          user.openPrivateMessages.push(options.owner.toString());
           user.save(function(err) {
               if (err) {
                 console.error(err);
