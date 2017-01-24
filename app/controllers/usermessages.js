@@ -81,6 +81,11 @@ module.exports = function() {
                 if (err) {
                     return res.sendStatus(400);
                 }
+
+                messages = messages.map(function(message) {
+                    return message.toJSON(req.user);
+                });
+
                 res.json(messages);
             });
         },

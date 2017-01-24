@@ -111,7 +111,7 @@ UserMessageManager.prototype.create = function(options, cb) {
 UserMessageManager.prototype.list = function(options, cb) {
     options = options || {};
 
-    if (!options.room) {
+    if (!options.user) {
         return cb(null, []);
     }
 
@@ -123,7 +123,7 @@ UserMessageManager.prototype.list = function(options, cb) {
         maxTake: 5000
     });
 
-    var UserMessage = mongoose.model('Message');
+    var UserMessage = mongoose.model('UserMessage');
 
     var find = UserMessage.find({
         users: { $all: [options.currentUser, options.user] }
