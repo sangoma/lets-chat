@@ -46,6 +46,7 @@ MessageSchema.method('toJSON', function() {
     return {
         id: this._id,
         owner: this.owner,
+        users: this.users,
         text: this.text,
         posted: this.posted
     };
