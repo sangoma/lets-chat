@@ -317,9 +317,20 @@ module.exports = function() {
                             });
                         }
                         req.session.passport = temp;
-                        res.json({
-                            status: 'success',
-                            message: 'Logging you in...'
+                        core.account.generateToken(req.user._id, function (err, token) {
+                            if (err) {
+                                return res.json({
+                                    status: 'error',
+                                    message: 'Unable to generate a token.',
+                                    errors: err
+                                });
+                            }
+
+                            res.json({
+                                status: 'success',
+                                message: 'Logging you in...',
+                                token: token
+                            });
                         });
                     });
                 });
