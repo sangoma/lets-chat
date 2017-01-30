@@ -74,6 +74,7 @@
     "js-yaml": "^3.6.1",
     "less": "^2.7.1",
     "lodash": "^4.13.1",
+    "lets-chat-freepbx-auth": "git+ssh://git@git.freepbx.org/shmzl/lets-chat-freepbx-auth.git#development",
     "md5": "^2.1.0",
     "moment": "^2.14.1",
     "mongoose": "^4.5.5",
