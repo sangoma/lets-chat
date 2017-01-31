@@ -55,7 +55,7 @@ auth:
   providers: [local] # [local, kerberos, ldap] - You can specify the order
   local:
     enableRegistration: true
-    passwordRegex: ^.{8,64}$
+    passwordRegex: ^.{4,64}$
 
 private:
   enable: false
