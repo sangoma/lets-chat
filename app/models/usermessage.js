@@ -29,6 +29,9 @@ var MessageSchema = new mongoose.Schema({
     }
 });
 
+/*
+// TODO/FIXME: This seems not working we will check out that later.
+
 if (settings.private.expire !== false) {
     var defaultExpire = 6 * 60; // 6 hours
 
@@ -36,6 +39,7 @@ if (settings.private.expire !== false) {
         expireAfterSeconds: (settings.private.expire || defaultExpire) * 60
     });
 }
+*/
 
 MessageSchema.index({ users: 1, posted: -1, _id: 1 });
 
