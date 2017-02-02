@@ -59,7 +59,7 @@ module.exports = MessageProcessor.extend({
                 jid: this.connection.getUserJid(user.username),
                 name: user.displayName,
                 subscription: 'both'
-            }).c('group').t('Let\'s Chat');
+            }).c('group').t('Zulu');
         }.bind(this));
 
         cb(null, stanza);

@@ -19,7 +19,7 @@ module.exports = MessageProcessor.extend({
         query.c('identity', {
             category: 'conference',
             type: 'text',
-            name: 'Let\'s Chat Conference Service'
+            name: 'Zulu'
         });
 
         query.c('feature', {

@@ -22,7 +22,7 @@ module.exports = MessageProcessor.extend({
         query.c('identity', {
             category: 'server',
             type: 'im',
-            name: 'Let\'s chat'
+            name: 'Zulu'
         });
 
         query.c('feature', {

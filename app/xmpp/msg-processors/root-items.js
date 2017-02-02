@@ -21,7 +21,7 @@ module.exports = MessageProcessor.extend({
 
         query.c('item', {
             jid: this.connection.getConfDomain(),
-            name: 'Let\'s Chat Conference Service'
+            name: 'Zulu Conference Service'
         });
 
         cb(null, stanza);
