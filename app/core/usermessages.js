@@ -32,7 +32,7 @@ UserMessageManager.prototype.close = function(options, cb) {
         var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
 
         if (messageInArray) {
-          user.openPrivateMessages = user.openPrivateMessages.splice(user.openPrivateMessages.indexOf(options.user.toString()), 1);
+          user.openPrivateMessages = _.without(user.openPrivateMessages, options.user.toString());
           user.save(function(err) {
               if (err) {
                   console.error(err);
