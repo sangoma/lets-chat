@@ -19,9 +19,11 @@ module.exports = MessageProcessor.extend({
             xmlns: 'http://jabber.org/protocol/disco#items'
         });
 
+        var groupName = (process.env.FREEPBX_SYSTEM_IDENT) ? process.env.FREEPBX_SYSTEM_IDENT : 'UC Chat';
+
         query.c('item', {
             jid: this.connection.getConfDomain(),
-            name: 'Zulu Conference Service'
+            name: groupName
         });
 
         cb(null, stanza);

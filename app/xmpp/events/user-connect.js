@@ -45,13 +45,15 @@ module.exports = EventListener.extend({
                 to: x.jid()
             });
 
+            var groupName = (process.env.FREEPBX_SYSTEM_IDENT) ? process.env.FREEPBX_SYSTEM_IDENT : 'UC Chat';
+
             roster.c('query', {
                 xmlns: 'jabber:iq:roster'
             }).c('item', {
                 jid: x.getUserJid(connection.user.username),
                 name: connection.user.displayName,
                 subscription: 'both'
-            }).c('group').t('Zulu');
+            }).c('group').t(groupName);
 
             this.send(x, roster);
 

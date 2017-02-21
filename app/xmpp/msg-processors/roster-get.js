@@ -54,12 +54,13 @@ module.exports = MessageProcessor.extend({
             if (user.id && user.id === this.connection.user.id) {
                 return;
             }
+            var groupName = (process.env.FREEPBX_SYSTEM_IDENT) ? process.env.FREEPBX_SYSTEM_IDENT : 'UC Chat';
 
             v.c('item', {
                 jid: this.connection.getUserJid(user.username),
                 name: user.displayName,
                 subscription: 'both'
-            }).c('group').t('Zulu');
+            }).c('group').t(groupName);
         }.bind(this));
 
         cb(null, stanza);

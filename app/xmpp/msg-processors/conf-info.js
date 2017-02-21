@@ -16,10 +16,12 @@ module.exports = MessageProcessor.extend({
             xmlns: 'http://jabber.org/protocol/disco#info'
         });
 
+        var groupName = (process.env.FREEPBX_SYSTEM_IDENT) ? process.env.FREEPBX_SYSTEM_IDENT : 'UC Chat';
+
         query.c('identity', {
             category: 'conference',
             type: 'text',
-            name: 'Zulu'
+            name: groupName 
         });
 
         query.c('feature', {
