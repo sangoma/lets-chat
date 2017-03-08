@@ -99,5 +99,6 @@
     "grunt": "~0.4.5",
     "grunt-bower": "^0.21.2",
     "grunt-bower-task": "~0.4.0"
-  }
+  },
+  "private": true
 }
