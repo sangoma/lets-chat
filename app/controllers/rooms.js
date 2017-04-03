@@ -4,7 +4,8 @@
 
 'use strict';
 
-var settings = require('./../config').rooms;
+var _ = require('lodash'),
+    settings = require('./../config').rooms;
 
 module.exports = function() {
     var app = this.app,
@@ -38,6 +39,23 @@ module.exports = function() {
                     app.io.emit('users:leave', user);
                 }
             }
+        });
+    });
+
+    core.on('rooms:invite', function(message, room, user) {
+        var msg = message.toJSON();
+        User.findById(message.owner, function (err, owner) {
+          if (err) {
+            console.log(err);
+          }
+          msg.owner = owner.username;
+          msg.room = room.toJSON(user);
+          var connections = core.presence.system.connections.query({
+              type: 'socket.io', userId: user._id.toString()
+          });
+          _.each(connections, function(connection) {
+              connection.socket.emit('rooms:invite', msg);
+          });
         });
     });
 
@@ -113,6 +131,12 @@ module.exports = function() {
         .get(function(req) {
             req.io.route('rooms:users');
         });
+
+    app.route('/rooms/:room/invite')
+         .all(middlewares.requireLogin, middlewares.roomRoute)
+         .post(function(req, res) {
+             req.io.route('rooms:invite');
+         });
 
 
     //
@@ -307,6 +331,10 @@ module.exports = function() {
 
                 res.json(users);
             });
+        },
+        invite: function(req, res) {
+           console.log('Invite sent', req.data);
+           app.io.emit('rooms:invite', req.data);
         }
     });
 };
