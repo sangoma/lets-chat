@@ -66,11 +66,8 @@ MessageManager.prototype.create = function(options, cb) {
                     if (!user) {
                         return ;
                     }
-                    //console.log(user);
-                    if (room.participants.indexOf(user._id) === -1) {
-                        // console.log('Inviting '+ user.username);
-                        this.core.emit('rooms:invite', message, room, user);
-                    }
+                    // console.log('Inviting '+ user.username);
+                    this.core.emit('rooms:invite', message, room, user);
                 }.bind(this));
             }
         }.bind(this));

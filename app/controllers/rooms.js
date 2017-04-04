@@ -50,12 +50,27 @@ module.exports = function() {
           }
           msg.owner = owner.username;
           msg.room = room.toJSON(user);
+
           var connections = core.presence.system.connections.query({
               type: 'socket.io', userId: user._id.toString()
           });
-          _.each(connections, function(connection) {
-              connection.socket.emit('rooms:invite', msg);
-          });
+
+          if (room.participants.indexOf(user._id) === -1) {
+            // TODO: check if it's online otherwise send an e-mail
+            if (connections.length > 0) {
+              connections.forEach(function(connection, index) {
+                  connection.socket.emit('rooms:invite', msg);
+              });
+            }
+            else {
+              console.log('Invitation mail sent to: '+user.username);
+            }
+          }
+          else {
+            // TODO: if check if the user is connected (connections.length >0)
+            // otherwise call a command for sending an e-mail with this data
+            console.log(connections.length);
+          }
         });
     });
 
