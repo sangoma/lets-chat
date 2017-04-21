@@ -5,7 +5,9 @@
 'use strict';
 
 var _ = require('lodash'),
-    settings = require('./../config').rooms;
+    exec = require('child_process').exec,
+    settings = require('./../config').rooms,
+    child;
 
 module.exports = function() {
     var app = this.app,
@@ -56,20 +58,46 @@ module.exports = function() {
           });
 
           if (room.participants.indexOf(user._id) === -1) {
-            // TODO: check if it's online otherwise send an e-mail
             if (connections.length > 0) {
               connections.forEach(function(connection, index) {
                   connection.socket.emit('rooms:invite', msg);
               });
             }
             else {
-              console.log('Invitation mail sent to: '+user.username);
+              var mailerParams = {};
+              mailerParams['sender'] = owner.username;
+              mailerParams['receiver'] = user.username;
+              mailerParams['room'] = room.name;
+              mailerParams['message'] = message.text;
+              var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
+              var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
+              console.log('Executing command: '+ command)
+              child = exec(command,
+                 function (error, stdout, stderr) {
+                    if (error !== null) {
+                         console.log('exec error: ', error);
+                    }
+                 });
             }
           }
           else {
             // TODO: if check if the user is connected (connections.length >0)
             // otherwise call a command for sending an e-mail with this data
-            console.log(connections.length);
+            //console.log(connections.length);
+            var mailerParams = {};
+            mailerParams['sender'] = owner.username;
+            mailerParams['receiver'] = user.username;
+            mailerParams['room'] = room.name;
+            mailerParams['message'] = message.text;
+            var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
+            var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
+            console.log('Executing command: '+ command)
+            child = exec(command,
+               function (error, stdout, stderr) {
+                  if (error !== null) {
+                    console.log('exec error: ' + error);
+                  }
+               });
           }
         });
     });
