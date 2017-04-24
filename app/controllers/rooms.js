@@ -71,7 +71,7 @@ module.exports = function() {
               mailerParams['message'] = message.text;
               var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
               var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
-              console.log('Executing command: '+ command)
+              console.debug('Executing command: '+ command)
               child = exec(command,
                  function (error, stdout, stderr) {
                     if (error !== null) {
@@ -81,9 +81,6 @@ module.exports = function() {
             }
           }
           else {
-            // TODO: if check if the user is connected (connections.length >0)
-            // otherwise call a command for sending an e-mail with this data
-            //console.log(connections.length);
             var mailerParams = {};
             mailerParams['sender'] = owner.username;
             mailerParams['receiver'] = user.username;
@@ -91,7 +88,7 @@ module.exports = function() {
             mailerParams['message'] = message.text;
             var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
             var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
-            console.log('Executing command: '+ command)
+            console.debug('Executing command: '+ command)
             child = exec(command,
                function (error, stdout, stderr) {
                   if (error !== null) {
