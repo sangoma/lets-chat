@@ -69,9 +69,9 @@ module.exports = function() {
               mailerParams['receiver'] = user.username;
               mailerParams['room'] = room.name;
               mailerParams['message'] = message.text;
-              var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
+              var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");
               var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
-              console.debug('Executing command: '+ command)
+              console.log('Executing command: '+ command)
               child = exec(command,
                  function (error, stdout, stderr) {
                     if (error !== null) {
@@ -86,9 +86,9 @@ module.exports = function() {
             mailerParams['receiver'] = user.username;
             mailerParams['room'] = room.name;
             mailerParams['message'] = message.text;
-            var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
+            var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");
             var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
-            console.debug('Executing command: '+ command)
+            console.log('Executing command: '+ command)
             child = exec(command,
                function (error, stdout, stderr) {
                   if (error !== null) {
