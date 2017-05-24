@@ -50,6 +50,26 @@ MessageManager.prototype.create = function(options, cb) {
                 cb(null, message, room, user);
                 this.core.emit('messages:new', message, room, user, options.data);
             }.bind(this));
+            // we are going to check which of those users are not on that channel
+            var pattern = /\B@[a-z0-9_-]*/gi;
+            var results = (message.text.match(pattern)) ? message.text.match(pattern) : [];
+            // console.log(results);
+            for (var userIndex=0; userIndex<results.length; userIndex++) {
+                var username = results[userIndex].replace('@', '');
+                // we probably need to check if '.' is on the "username" in order
+                // to detect if it's an e-mail and not need a query to the DB
+                User.findByIdentifier(username, function(err, user) {
+                    if (err) {
+                        console.error(err);
+                        return ;
+                    }
+                    if (!user) {
+                        return ;
+                    }
+                    // console.log('Inviting '+ user.username);
+                    this.core.emit('rooms:invite', message, room, user);
+                }.bind(this));
+            }
         }.bind(this));
     }.bind(this));
 };
