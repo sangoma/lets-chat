@@ -71,7 +71,7 @@ var UserSchema = new mongoose.Schema({
         trim: true,
         lowercase: true,
         unique: true,
-        match: /^[\w][\w\-\.]*[\w]$/i
+        match: /.*/i
     },
     displayName: {
         type: String,
@@ -140,7 +140,7 @@ UserSchema.pre('save', function(next) {
 UserSchema.statics.findByIdentifier = function(identifier, cb) {
     var opts = {};
 
-    if (identifier.match(/^[0-9a-fA-F]{24}$/)) {
+    if (identifier.match(/.*/)) {
         opts.$or = [{_id: identifier}, {username: identifier}];
     } else if (identifier.indexOf('@') === -1) {
         opts.username = identifier;
