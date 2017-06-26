@@ -141,7 +141,7 @@ UserSchema.statics.findByIdentifier = function(identifier, cb) {
     var opts = {};
 
     if (identifier.match(/.*/)) {
-        opts.$or = [{_id: identifier}, {username: identifier}];
+        opts.$or = [{username: identifier}];
     } else if (identifier.indexOf('@') === -1) {
         opts.username = identifier;
     } else {
