@@ -329,6 +329,7 @@ module.exports = function() {
                             res.json({
                                 status: 'success',
                                 message: 'Logging you in...',
+                                userId: req.user._id,
                                 token: token
                             });
                         });
