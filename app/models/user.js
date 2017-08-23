@@ -86,6 +86,10 @@ var UserSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    freepbxId: {
+        type: String,
+        required: false
+    },
     rooms: [{
       type: ObjectId,
       ref: 'Room'
@@ -285,6 +289,7 @@ UserSchema.method('toJSON', function() {
         avatar: this.avatar,
         openRooms: this.openRooms,
         openPrivateMessages: this.openPrivateMessages,
+        freepbxId: this.freepbxId
     };
 });
 
