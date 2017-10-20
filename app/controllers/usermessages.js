@@ -5,7 +5,9 @@
 'use strict';
 
 var _ = require('lodash'),
-    settings = require('./../config');
+    exec = require('child_process').exec,
+    settings = require('./../config'),
+    child;
 
 module.exports = function() {
 
@@ -18,15 +20,34 @@ module.exports = function() {
         return;
     }
 
-    core.on('user-messages:new', function(message) {
+    core.on('user-messages:new', function(message, user, owner) {
         _.each(message.users, function(userId) {
             var connections = core.presence.system.connections.query({
                 type: 'socket.io', userId: userId.toString()
             });
-
-            _.each(connections, function(connection) {
-                connection.socket.emit('user-messages:new', message);
-            });
+            var newMessage = _.cloneDeep(message);
+            newMessage.owner = owner;
+            if (owner.id == userId || connections.length > 0) {
+                _.each(connections, function(connection) {
+                    connection.socket.emit('user-messages:new', newMessage);
+                });
+            }
+            else {
+              var mailerParams = {};
+              mailerParams['sender'] = owner.username;
+              mailerParams['receiver'] = user.username;
+              mailerParams['room'] = {'type': 'private', 'name': ''};
+              mailerParams['message'] = message.text;
+              var encodedParams = new Buffer(JSON.stringify(mailerParams)).toString("base64");;
+              var command = "/var/lib/asterisk/bin/chatmailer.php "+ encodedParams;
+              console.log('Executing command: '+ command)
+              child = exec(command,
+                 function (error, stdout, stderr) {
+                    if (error !== null) {
+                         console.log('exec error: ', error);
+                    }
+                 });
+            }
         });
     });
 

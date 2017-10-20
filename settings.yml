@@ -31,6 +31,8 @@ database:
 secrets:
   cookie: secretsauce
 auth:
+  throttling:
+    enable: false
   providers: [freepbx-auth]
 #  local:
 #    enableRegistration: true

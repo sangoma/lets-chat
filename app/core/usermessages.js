@@ -64,7 +64,7 @@ UserMessageManager.prototype.create = function(options, cb) {
     }.bind(this));
 
 
-    User.findById(options.user, function(err, user) {
+    User.findByIdentifier(options.user, function(err, user) {
         if (err) {
             console.error(err);
             return cb(err);
@@ -74,7 +74,7 @@ UserMessageManager.prototype.create = function(options, cb) {
         }
 
         var data = {
-            users: [options.owner, options.user],
+            users: [options.owner, user._id],
             owner: options.owner,
             text: options.text
         };
