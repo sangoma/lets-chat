@@ -6,6 +6,7 @@
 
 var bcrypt = require('bcryptjs'),
     crypto = require('crypto'),
+    _ = require('lodash'),
     md5 = require('md5'),
     hash = require('node_hash'),
     mongoose = require('mongoose'),
@@ -144,14 +145,11 @@ UserSchema.pre('save', function(next) {
 UserSchema.statics.findByIdentifier = function(identifier, cb) {
     var opts = {};
 
-    if (identifier.match(/.*/)) {
-        opts.$or = [{_id: identifier}, {username: identifier}];
-    } else if (identifier.indexOf('@') === -1) {
-        opts.username = identifier;
-    } else {
-        opts.email = identifier;
-    }
-
+  if(!_.isNaN(new Number(identifier))) {
+    opts.$or = [{username: identifier}, {freepbxId: identifier}];
+  } else {
+    opts.$or = [{_id: identifier}, {username: identifier}];
+  }
     this.findOne(opts, cb);
 };
 
