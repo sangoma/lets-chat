@@ -50,8 +50,9 @@ UserMessageManager.prototype.create = function(options, cb) {
 
     User.findById(options.owner, function(err, user) {
         var messageInArray = _.includes(user.openPrivateMessages, options.user.toString());
+        var isFreepbxId = options.user.toString().length < 24;
 
-        if (!messageInArray) {
+        if (!messageInArray && !isFreepbxId) {
           user.openPrivateMessages.push(options.user.toString());
           user.save(function(err) {
               if (err) {
