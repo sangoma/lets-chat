@@ -189,6 +189,7 @@ RoomManager.prototype.list = function(options, cb) {
     }
 
     find.populate('participants');
+    find.populate('owner');
 
     find.exec(function(err, rooms) {
         if (err) {
