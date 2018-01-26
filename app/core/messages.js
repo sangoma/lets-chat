@@ -58,7 +58,7 @@ MessageManager.prototype.create = function(options, cb) {
                 var username = results[userIndex].replace('@', '');
                 // we probably need to check if '.' is on the "username" in order
                 // to detect if it's an e-mail and not need a query to the DB
-                User.findByIdentifier(username, function(err, user) {
+                User.findByUsername(username, function(err, user) {
                     if (err) {
                         console.error(err);
                         return ;

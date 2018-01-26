@@ -147,14 +147,17 @@ UserSchema.pre('save', function(next) {
 });
 
 UserSchema.statics.findByIdentifier = function(identifier, cb) {
-    var opts = {};
-
+  var opts = {};
   if(!_.isNaN(new Number(identifier))) {
     opts.$or = [{username: identifier}, {freepbxId: identifier}];
   } else {
     opts.$or = [{_id: identifier}, {username: identifier}];
   }
-    this.findOne(opts, cb);
+  this.findOne(opts, cb);
+};
+
+UserSchema.statics.findByUsername = function(username, cb) {
+  this.findOne({username: username}, cb);
 };
 
 UserSchema.methods.generateToken = function(cb) {
